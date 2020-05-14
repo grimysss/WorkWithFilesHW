@@ -48,16 +48,11 @@ namespace Controls
 				LoadXML();
 			}
 
-			// Если нет, то предлагаем создать его.
+			// Если не существует, то оставляем настройки по умолчанию.
 			else
 			{
-				DialogResult result = MessageBox.Show("Создать его с текущими настройками?", "XML файл не был найден.", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-
-				if(result == DialogResult.OK)
-				{
-					SaveXML();
-				}
-
+				IsDetector = false;
+				IsUnderCatalog = false;
 			}
 
 		}
@@ -66,17 +61,13 @@ namespace Controls
 		public void SaveXML()
 		{
 			XElement element;
-			//XAttribute xAttribute;
 
 			XDocument xdoc = new XDocument();
 
 			XElement project = new XElement("WinForm");
 
-			//project.Add(xAttribute);
-
 			element = new XElement("IsDetector", IsDetector);
-			//xAttribute = new XAttribute("Value", IsDetector);
-			//element.Add(xAttribute);
+
 			project.Add(element);
 
 			element = new XElement("IsUnderCatalog", IsUnderCatalog);
@@ -90,15 +81,6 @@ namespace Controls
 			_logControler.AddMessage("Save project setting in XML file.");
 
 
-		}
-
-		public void IsDirectoryExists(DirectoryInfo directoryInfo)
-		{
-
-			if(!directoryInfo.Exists)
-			{
-				directoryInfo.Create();
-			}
 		}
 
 		/// <summary> Загрузить настройки проекта.</summary>

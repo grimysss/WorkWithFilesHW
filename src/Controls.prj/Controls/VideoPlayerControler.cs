@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Controls
 {
@@ -13,7 +14,7 @@ namespace Controls
 		#region Data
 
 		private List<string> _listImage;
-		private int _curerntIamge;
+		private int _curerntImage;
 		private int _countImage;
 
 		private ProjectSettings _projectSettings;
@@ -84,11 +85,21 @@ namespace Controls
 
 			_listImage = _filesDirectory.ToList();
 
-			_curerntIamge = 0;
+			_curerntImage = 0;
 			_countImage = _filesDirectory.Count();
 
-			AddImageOnControl(_listImage[_curerntIamge]);
-			_logControler.AddMessage($"{_curerntIamge} {_countImage}");
+			// Проверяем наличие файлов с нужным расширением.
+			if(_countImage != 0)
+			{
+				AddImageOnControl(_listImage[_curerntImage]);
+				_logControler.AddMessage($"{_curerntImage} {_countImage}");
+				}
+			else
+			{
+				MessageBox.Show("В директории нет файлов с нужным расширением \n(.png, .jpg, .bmp, .jpeg)", "Внимание!",
+					MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+
 		}
 
 		/// <summary> Добавить картинку на Контрол. </summary>
@@ -103,13 +114,13 @@ namespace Controls
 		{
 			if(_listImage != null && _listImage.Count != 0)
 			{
-				_curerntIamge++;
-				if(_curerntIamge == _countImage)
+				_curerntImage++;
+				if(_curerntImage == _countImage)
 				{
-					_curerntIamge = 0;
+					_curerntImage = 0;
 				}
-				AddImageOnControl(_listImage[_curerntIamge]);
-				_logControler.AddMessage($"{_curerntIamge} {_countImage}");
+				AddImageOnControl(_listImage[_curerntImage]);
+				_logControler.AddMessage($"{_curerntImage} {_countImage}");
 			}
 		}
 
@@ -118,13 +129,13 @@ namespace Controls
 		{
 			if(_listImage != null && _listImage.Count != 0)
 			{
-				_curerntIamge--;
-				if(_curerntIamge == -1)
+				_curerntImage--;
+				if(_curerntImage == -1)
 				{
-					_curerntIamge = _countImage -1;
+					_curerntImage = _countImage -1;
 				}
-				AddImageOnControl(_listImage[_curerntIamge]);
-				_logControler.AddMessage($"{_curerntIamge} {_countImage}");
+				AddImageOnControl(_listImage[_curerntImage]);
+				_logControler.AddMessage($"{_curerntImage} {_countImage}");
 			}
 		}
 
