@@ -31,7 +31,18 @@ namespace Controls
 		{
 			_logControler = logControler;
 
-			// Проверям существует ли XML файл.
+			CheckIfXMLEsists();
+		}
+
+		#endregion
+
+		#region Methods
+
+		/// <summary> Проверям существует ли XML файл. </summary>
+		public void CheckIfXMLEsists()
+		{
+
+			// Если существует, то загружаем его.
 			if(File.Exists(_pathXML))
 			{
 				LoadXML();
@@ -50,10 +61,6 @@ namespace Controls
 			}
 
 		}
-
-		#endregion
-
-		#region Methods
 
 		/// <summary> Сохранить настройки проекта. </summary>
 		public void SaveXML()
