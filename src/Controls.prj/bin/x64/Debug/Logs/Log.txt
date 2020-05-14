@@ -1,0 +1,10 @@
+[14.05.2020 18:20:12] - True - False
+[14.05.2020 18:20:14] - Save project setting in XML file.
+[14.05.2020 18:20:30] - Save project setting in XML file.
+[14.05.2020 18:20:32] - Save project setting in XML file.
+[14.05.2020 18:20:36] - True - False
+[14.05.2020 18:21:36] - True - False
+[14.05.2020 18:22:55] - True - False
+[14.05.2020 18:23:28] - True - False
+[14.05.2020 18:23:41] - Save project setting in XML file.
+[14.05.2020 18:23:47] - Save project setting in XML file.

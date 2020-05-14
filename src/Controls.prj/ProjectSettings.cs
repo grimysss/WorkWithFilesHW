@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace Controls
@@ -34,7 +31,26 @@ namespace Controls
 		{
 			_logControler = logControler;
 
-			LoadXML();
+			string curFile = _pathXML;
+
+			// Проверям существует ли XML файл.
+			if(File.Exists(curFile))
+			{
+				LoadXML();
+			}
+
+			// Если нет, то предлагаем создать его.
+			else
+			{
+				DialogResult result = MessageBox.Show("Создать его с текущими настройками?", "XML файл не был найден.", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+				if(result == DialogResult.OK)
+				{
+					SaveXML();
+				}
+
+			}
+
 		}
 
 		#endregion
@@ -69,6 +85,15 @@ namespace Controls
 			_logControler.AddMessage("Save project setting in XML file.");
 
 
+		}
+
+		public void IsDirectoryExists(DirectoryInfo directoryInfo)
+		{
+
+			if(!directoryInfo.Exists)
+			{
+				directoryInfo.Create();
+			}
 		}
 
 		/// <summary> Загрузить настройки проекта.</summary>
