@@ -31,10 +31,8 @@ namespace Controls
 		{
 			_logControler = logControler;
 
-			string curFile = _pathXML;
-
 			// Проверям существует ли XML файл.
-			if(File.Exists(curFile))
+			if(File.Exists(_pathXML))
 			{
 				LoadXML();
 			}
