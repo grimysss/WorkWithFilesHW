@@ -48,13 +48,6 @@ namespace Controls
 				LoadXML();
 			}
 
-			// Если не существует, то оставляем настройки по умолчанию.
-			else
-			{
-				IsDetector = false;
-				IsUnderCatalog = false;
-			}
-
 		}
 
 		/// <summary> Сохранить настройки проекта. </summary>
@@ -78,8 +71,7 @@ namespace Controls
 
 			xdoc.Save(_pathXML);
 
-			_logControler.AddMessage("Save project setting in XML file.");
-
+			_logControler.AddMessage("Настройки проекта сохранены в XML файле.");
 
 		}
 
