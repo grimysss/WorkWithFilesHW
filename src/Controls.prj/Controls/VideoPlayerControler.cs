@@ -1,10 +1,8 @@
-﻿using System;
+﻿using OpenCvSharp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Controls
 {
@@ -20,12 +18,22 @@ namespace Controls
 		private ProjectSettings _projectSettings;
 		private LogControler _logControler;
 
+		private VideoCapture _capture;
+		private int _fps;
+
+		private bool _pause;
+		private bool _stop;
+		private string _fileStart;
+
 		#endregion
 
 		#region Event
 
 		/// <summary> Вызывается при  изменении картинки. </summary>
 		public event EventHandler<string> ChangeImage;
+
+		/// <summary> Вызывается при  изменении кадра. </summary>
+		public event EventHandler<Mat> ChangeFrame;
 
 		#endregion
 
@@ -38,6 +46,16 @@ namespace Controls
 			if(ChangeImage != null)
 			{
 				ChangeImage.Invoke(null, path);
+			}
+		}
+
+		/// <summary> Обработчик события изменения кадра. </summary>
+		/// <param name="image"> Кадр. </param>
+		private void OnChangeFrame(Mat image)
+		{
+			if(ChangeFrame != null)
+			{
+				ChangeFrame.Invoke(null, image);
 			}
 		}
 
@@ -56,7 +74,7 @@ namespace Controls
 
 		#endregion
 
-		#region Methods
+		#region MethodsImage
 
 		/// <summary> Открыть одну картинку. </summary>
 		/// <param name="path">Путь к картинке. </param>
@@ -96,8 +114,7 @@ namespace Controls
 				}
 			else
 			{
-				MessageBox.Show("В директории нет файлов с нужным расширением \n(.png, .jpg, .bmp, .jpeg)", "Внимание!",
-					MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				_logControler.AddMessage("Изображений не обнаружено!");
 			}
 
 		}
@@ -130,7 +147,7 @@ namespace Controls
 			if(_listImage != null && _listImage.Count != 0)
 			{
 				_curerntImage--;
-				if(_curerntImage == -1)
+				if(_curerntImage <= 0)
 				{
 					_curerntImage = _countImage -1;
 				}
@@ -140,5 +157,95 @@ namespace Controls
 		}
 
 		#endregion
+
+		#region MethodsVideo
+		/// <summary> Открыть видео. </summary>
+		/// <param name="path"></param>
+		public void OpenVideo(string path)
+		{
+			if(_capture != null) _capture.Dispose();
+
+			_fileStart = path;
+			_capture = new VideoCapture(path);
+			_fps = (int)(1000 / _capture.Fps);
+			using(Mat image = new Mat())
+			{
+				_capture.Read(image);
+				if(!image.Empty())
+				{
+					NextFrameAddInVideoControl(image);
+					_pause = false;
+				}
+				else
+				{
+					_logControler.AddMessage("Некорректное видео!");
+				}
+
+			}
+		}
+
+		/// <summary> Воспроизвести видео. </summary>
+		public void PlayVideo()
+		{
+			if(_pause) _pause = false;
+			if(_stop) _stop = false;
+
+			while(true)
+			{
+				if(_capture != null)
+				{
+					if(_pause || _stop)
+					{
+						_pause = false;
+						_stop = false;
+						break;
+					}
+					using(Mat image = new Mat())
+					{
+						_capture.Read(image);
+						if(image.Empty())
+						{
+							_logControler.AddMessage("Конец видео!");
+							break;
+						}
+						NextFrameAddInVideoControl(image);
+						Cv2.WaitKey(_fps);
+
+						//Cv2.WaitKey(0);
+					}
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		/// <summary> Остановить видео. </summary>
+		public void StopVideo()
+		{
+			if(_capture != null)
+			{
+			_stop = true;
+			_capture.Dispose();
+			OpenVideo(_fileStart);
+			}
+		}
+
+		/// <summary> Пауза в видео. </summary>
+		public void PauseVideo()
+		{
+			if(_capture != null) _pause = true;
+		}
+
+		/// <summary> Отобразить следующий кадр. </summary>
+		/// <param name="image"></param>
+		private void NextFrameAddInVideoControl(Mat image)
+		{
+			OnChangeFrame(image);
+		}
+
+		#endregion
+
 	}
 }

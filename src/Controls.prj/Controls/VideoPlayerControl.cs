@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
+using OpenCvSharp;
 
 namespace Controls
 {
@@ -44,8 +38,32 @@ namespace Controls
 
 			_videoPlayerControler.ChangeImage += OnChangeImage;
 
+			_videoPlayerControler.ChangeFrame += OnChangeFrame;
+
 			_opnFileDialog.Filter = "Image|*.png; *.jpg|Video|*.mp4; *.avi;";
 
+		}
+
+		private void OnChangeFrame(object sender, Mat image)
+		{
+			using(var img = new Mat())
+			{
+				// В целом на моих примерах по эффективности все схожи, нужно тестировать на других видео.
+				Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Cubic);
+				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Linear);
+				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Area);
+				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Lanczos4);
+
+				// Сохраняет скорость, но сильно падает качество.
+				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Nearest);
+
+				//_picVideo.Image = BitmapConverter.ToBitmap(img);
+				//_picVideo.Image = BitmapConverter.ToBitmap(image);
+
+				//_picVideo.ImageIpl = image;
+				_picVideo.ImageIpl = img;
+				_picVideo.Refresh();
+			}
 		}
 
 		#endregion
@@ -66,7 +84,7 @@ namespace Controls
 			}
 			else if(_opnFileDialog.FilterIndex == (int)FilterType.Video)
 			{
-
+				_videoPlayerControler.OpenVideo(_opnFileDialog.FileName);
 			}
 
 		}
@@ -87,5 +105,25 @@ namespace Controls
 
 		#endregion
 
+		/// <summary> Вызывается при нажатие на кнопку Start. </summary>
+		private void OnStartClick(object sender, EventArgs e)
+		{
+			_btnStart.Enabled = false;
+			try
+			{
+				_videoPlayerControler.PlayVideo();
+			}
+			finally
+			{
+				_btnStart.Enabled = true;
+			}
+		}
+
+
+		/// <summary> Вызывается при нажатие на кнопку Pause. </summary>
+		private void OnPauseClick(object sender, EventArgs e) => _videoPlayerControler.PauseVideo();
+
+		/// <summary> Вызывается при нажатие на кнопку Stop. </summary>
+		private void OnStopClick(object sender, EventArgs e) => _videoPlayerControler.StopVideo();
 	}
 }

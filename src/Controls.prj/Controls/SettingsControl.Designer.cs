@@ -41,7 +41,7 @@
 			this._btnLoad.Name = "_btnLoad";
 			this._btnLoad.Size = new System.Drawing.Size(75, 23);
 			this._btnLoad.TabIndex = 5;
-			this._btnLoad.Text = "Load";
+			this._btnLoad.Text = "Загрузить";
 			this._btnLoad.UseVisualStyleBackColor = true;
 			// 
 			// _btnSave
@@ -51,7 +51,7 @@
 			this._btnSave.Name = "_btnSave";
 			this._btnSave.Size = new System.Drawing.Size(75, 23);
 			this._btnSave.TabIndex = 6;
-			this._btnSave.Text = "Save";
+			this._btnSave.Text = "Сохранить";
 			this._btnSave.UseVisualStyleBackColor = true;
 			this._btnSave.Click += new System.EventHandler(this.OnSaveClick);
 			// 
