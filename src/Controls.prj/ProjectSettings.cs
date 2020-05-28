@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Xml.Linq;
 
 namespace Controls
@@ -52,37 +53,49 @@ namespace Controls
 		/// <summary> Сохранить настройки проекта. </summary>
 		public void SaveXML()
 		{
-			XElement element;
+			// Создаем новый поток.
+			var thread = new Thread(() =>
+			{
+				XElement element;
 
-			XDocument xdoc = new XDocument();
+				XDocument xdoc = new XDocument();
 
-			XElement project = new XElement("WinForm");
+				XElement project = new XElement("WinForm");
 
-			element = new XElement("IsDetector", IsDetector);
+				element = new XElement("IsDetector", IsDetector);
 
-			project.Add(element);
+				project.Add(element);
 
-			element = new XElement("IsUnderCatalog", IsUnderCatalog);
-			project.Add(element);
+				element = new XElement("IsUnderCatalog", IsUnderCatalog);
+				project.Add(element);
 
 
-			xdoc.Add(project);
+				xdoc.Add(project);
 
-			xdoc.Save(_pathXML);
+				xdoc.Save(_pathXML);
 
-			_logControler.AddMessage("Настройки проекта сохранены в XML файле.");
+				_logControler.AddMessage("Настройки проекта сохранены в XML файле.");
+			});
+			//Запускаем поток.
+			thread.Start();
 
 		}
 
 		/// <summary> Загрузить настройки проекта.</summary>
 		public void LoadXML()
 		{
-			XDocument xdoc = XDocument.Load(_pathXML);
+			// Создаем новый поток.
+			var thread = new Thread(() =>
+			{
+				XDocument xdoc = XDocument.Load(_pathXML);
 
-			IsDetector = bool.Parse(xdoc.Root.Element("IsDetector").Value);
-			IsUnderCatalog = bool.Parse(xdoc.Root.Element("IsUnderCatalog").Value);
+				IsDetector = bool.Parse(xdoc.Root.Element("IsDetector").Value);
+				IsUnderCatalog = bool.Parse(xdoc.Root.Element("IsUnderCatalog").Value);
 
-			_logControler.AddMessage($"{IsDetector} - {IsUnderCatalog}");
+				_logControler.AddMessage($"{IsDetector} - {IsUnderCatalog}");
+			});
+			//Запускаем поток.
+			thread.Start();
 		}
 
 		#endregion

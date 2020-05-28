@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using OpenCvSharp;
 
@@ -46,24 +47,35 @@ namespace Controls
 
 		private void OnChangeFrame(object sender, Mat image)
 		{
-			using(var img = new Mat())
+			try
 			{
-				// В целом на моих примерах по эффективности все схожи, нужно тестировать на других видео.
-				Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Cubic);
-				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Linear);
-				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Area);
-				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Lanczos4);
+				using (var img = new Mat())
+				{
+					// Вызываем графический элемент _picVideo находящийся в другом потоке.
+					_picVideo.Invoke((MethodInvoker)(() =>
+					{
+						// В целом на моих примерах по эффективности все схожи, нужно тестировать на других видео.
+						Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Cubic);
+						//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Linear);
+						//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Area);
+						//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Lanczos4);
 
-				// Сохраняет скорость, но сильно падает качество.
-				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Nearest);
+						// Сохраняет скорость, но сильно падает качество.
+						//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Nearest);
 
-				//_picVideo.Image = BitmapConverter.ToBitmap(img);
-				//_picVideo.Image = BitmapConverter.ToBitmap(image);
+						//_picVideo.Image = BitmapConverter.ToBitmap(img);
+						//_picVideo.Image = BitmapConverter.ToBitmap(image);
 
-				//_picVideo.ImageIpl = image;
-				_picVideo.ImageIpl = img;
-				_picVideo.Refresh();
+						//_picVideo.ImageIpl = image;
+						_picVideo.ImageIpl = img;
+						_picVideo.Refresh();
+					}));
+				}
 			}
+			catch (Exception ex)
+			{
+			}
+
 		}
 
 		#endregion
@@ -108,22 +120,38 @@ namespace Controls
 		/// <summary> Вызывается при нажатие на кнопку Start. </summary>
 		private void OnStartClick(object sender, EventArgs e)
 		{
-			_btnStart.Enabled = false;
-			try
+			// Создаем новый поток.
+			var thread = new Thread(() =>
 			{
 				_videoPlayerControler.PlayVideo();
-			}
-			finally
-			{
-				_btnStart.Enabled = true;
-			}
+			});
+			//Запускаем поток.
+			thread.Start();
 		}
 
 
 		/// <summary> Вызывается при нажатие на кнопку Pause. </summary>
-		private void OnPauseClick(object sender, EventArgs e) => _videoPlayerControler.PauseVideo();
+		private void OnPauseClick(object sender, EventArgs e)
+		{
+			// Создаем новый поток.
+			var thread = new Thread(() =>
+			{
+				_videoPlayerControler.PauseVideo();
+			});
+			//Запускаем поток.
+			thread.Start();
+		}
 
 		/// <summary> Вызывается при нажатие на кнопку Stop. </summary>
-		private void OnStopClick(object sender, EventArgs e) => _videoPlayerControler.StopVideo();
+		private void OnStopClick(object sender, EventArgs e)
+		{
+			// Создаем новый поток.
+			var thread = new Thread(() =>
+			{
+				_videoPlayerControler.StopVideo();
+			});
+			//Запускаем поток.
+			thread.Start();
+		}
 	}
 }

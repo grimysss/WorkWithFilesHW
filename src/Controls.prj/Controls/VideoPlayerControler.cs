@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Controls
 {
@@ -111,7 +112,7 @@ namespace Controls
 			{
 				AddImageOnControl(_listImage[_curerntImage]);
 				_logControler.AddMessage($"{_curerntImage} {_countImage}");
-				}
+			}
 			else
 			{
 				_logControler.AddMessage("Изображений не обнаружено!");
@@ -149,7 +150,7 @@ namespace Controls
 				_curerntImage--;
 				if(_curerntImage <= 0)
 				{
-					_curerntImage = _countImage -1;
+					_curerntImage = _countImage - 1;
 				}
 				AddImageOnControl(_listImage[_curerntImage]);
 				_logControler.AddMessage($"{_curerntImage} {_countImage}");
@@ -187,38 +188,45 @@ namespace Controls
 		/// <summary> Воспроизвести видео. </summary>
 		public void PlayVideo()
 		{
-			if(_pause) _pause = false;
-			if(_stop) _stop = false;
+            // Создаем новый поток.
+            var thread = new Thread(() =>
+            {
 
-			while(true)
-			{
-				if(_capture != null)
+                if (_pause) _pause = false;
+				if(_stop) _stop = false;
+
+				while(true)
 				{
-					if(_pause || _stop)
+					if(_capture != null)
 					{
-						_pause = false;
-						_stop = false;
-						break;
-					}
-					using(Mat image = new Mat())
-					{
-						_capture.Read(image);
-						if(image.Empty())
+						if(_pause || _stop)
 						{
-							_logControler.AddMessage("Конец видео!");
+							_pause = false;
+							_stop = false;
 							break;
 						}
-						NextFrameAddInVideoControl(image);
-						Cv2.WaitKey(_fps);
+						using(Mat image = new Mat())
+						{
+							_capture.Read(image);
+							if(image.Empty())
+							{
+								_logControler.AddMessage("Конец видео!");
+								break;
+							}
+							NextFrameAddInVideoControl(image);
+							Cv2.WaitKey(_fps);
 
-						//Cv2.WaitKey(0);
+							//Cv2.WaitKey(0);
+						}
+					}
+					else
+					{
+						break;
 					}
 				}
-				else
-				{
-					break;
-				}
-			}
+			});
+			//Запускаем поток.
+			thread.Start();
 		}
 
 		/// <summary> Остановить видео. </summary>
@@ -226,9 +234,9 @@ namespace Controls
 		{
 			if(_capture != null)
 			{
-			_stop = true;
-			_capture.Dispose();
-			OpenVideo(_fileStart);
+				_stop = true;
+				_capture.Dispose();
+				OpenVideo(_fileStart);
 			}
 		}
 
