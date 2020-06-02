@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Controls
 {
@@ -162,7 +163,7 @@ namespace Controls
 		#region MethodsVideo
 		/// <summary> Открыть видео. </summary>
 		/// <param name="path"></param>
-		public void OpenVideo(string path)
+		public async Task OpenVideoAsync(string path)
 		{
 			if(_capture != null) _capture.Dispose();
 
@@ -174,7 +175,7 @@ namespace Controls
 				_capture.Read(image);
 				if(!image.Empty())
 				{
-					NextFrameAddInVideoControl(image);
+					await NextFrameAddInVideoControlAsync(image);
 					_pause = false;
 				}
 				else
@@ -186,12 +187,8 @@ namespace Controls
 		}
 
 		/// <summary> Воспроизвести видео. </summary>
-		public void PlayVideo()
+		public async Task PlayVideoAsync()
 		{
-            // Создаем новый поток.
-            var thread = new Thread(() =>
-            {
-
                 if (_pause) _pause = false;
 				if(_stop) _stop = false;
 
@@ -213,8 +210,9 @@ namespace Controls
 								_logControler.AddMessage("Конец видео!");
 								break;
 							}
-							NextFrameAddInVideoControl(image);
-							Cv2.WaitKey(_fps);
+							await NextFrameAddInVideoControlAsync(image);
+							await Task.Delay(_fps);
+							//Cv2.WaitKey(_fps);
 
 							//Cv2.WaitKey(0);
 						}
@@ -224,31 +222,31 @@ namespace Controls
 						break;
 					}
 				}
-			});
-			//Запускаем поток.
-			thread.Start();
 		}
 
 		/// <summary> Остановить видео. </summary>
-		public void StopVideo()
+		public async Task StopVideoAsync()
 		{
 			if(_capture != null)
 			{
 				_stop = true;
 				_capture.Dispose();
-				OpenVideo(_fileStart);
+				await OpenVideoAsync(_fileStart);
 			}
 		}
 
 		/// <summary> Пауза в видео. </summary>
-		public void PauseVideo()
+		public async Task PauseVideoAsync()
 		{
-			if(_capture != null) _pause = true;
+			await Task.Run(() =>
+			{
+				if (_capture != null) _pause = true;
+			});
 		}
 
 		/// <summary> Отобразить следующий кадр. </summary>
 		/// <param name="image"></param>
-		private void NextFrameAddInVideoControl(Mat image)
+		private async Task NextFrameAddInVideoControlAsync(Mat image)
 		{
 			OnChangeFrame(image);
 		}

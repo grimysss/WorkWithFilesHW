@@ -83,7 +83,7 @@
 			this._btnPause.TabStop = false;
 			this._btnPause.Text = "Пауза";
 			this._btnPause.UseVisualStyleBackColor = true;
-			this._btnPause.Click += new System.EventHandler(this.OnPauseClick);
+			this._btnPause.Click += new System.EventHandler(this.OnPauseClickAsync);
 			// 
 			// _btnStop
 			// 
@@ -95,7 +95,7 @@
 			this._btnStop.TabStop = false;
 			this._btnStop.Text = "Стоп";
 			this._btnStop.UseVisualStyleBackColor = true;
-			this._btnStop.Click += new System.EventHandler(this.OnStopClick);
+			this._btnStop.Click += new System.EventHandler(this.OnStopClickAsync);
 			// 
 			// _btnOpenFolder
 			// 
@@ -131,7 +131,7 @@
 			this._btnStart.TabStop = false;
 			this._btnStart.Text = "Старт";
 			this._btnStart.UseVisualStyleBackColor = true;
-			this._btnStart.Click += new System.EventHandler(this.OnStartClick);
+			this._btnStart.Click += new System.EventHandler(this.OnStartClickAsync);
 			// 
 			// _btnOpenFile
 			// 

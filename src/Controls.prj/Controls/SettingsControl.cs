@@ -44,7 +44,7 @@ namespace Controls
 		private void OnChangeDetector(object sender, EventArgs e) => _projectSettings.IsDetector = _chkDetector.Checked;
 
 		/// <summary> Вызывается по нажаитю на кнопку сохранить проект. </summary>
-		private void OnSaveClick(object sender, EventArgs e) => _projectSettings.SaveXML();
+		private void OnSaveClick(object sender, EventArgs e) => _projectSettings.SaveXMLAsync();
 
 		#endregion
 

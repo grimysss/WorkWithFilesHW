@@ -36,11 +36,7 @@ namespace Controls
 		/// <summary> Вызывается при добавлении текста в Лог. </summary>
 		private void OnAddMessageInLog(object sender, string text)
 		{
-			// Вызываем графический элемент _txtLog находящийся в другом потоке.
-			_txtLog.Invoke((MethodInvoker)(() =>
-			{
 				_txtLog.AppendText(text);
-			}));
 		}
 
 		#endregion

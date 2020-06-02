@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Controls
@@ -45,16 +46,15 @@ namespace Controls
 			// Если существует, то загружаем его.
 			if(File.Exists(_pathXML))
 			{
-				LoadXML();
+				LoadXMLAsync();
 			}
 
 		}
 
 		/// <summary> Сохранить настройки проекта. </summary>
-		public void SaveXML()
+		public async Task SaveXMLAsync()
 		{
-			// Создаем новый поток.
-			var thread = new Thread(() =>
+			await Task.Run(() =>
 			{
 				XElement element;
 
@@ -63,12 +63,10 @@ namespace Controls
 				XElement project = new XElement("WinForm");
 
 				element = new XElement("IsDetector", IsDetector);
-
 				project.Add(element);
 
 				element = new XElement("IsUnderCatalog", IsUnderCatalog);
 				project.Add(element);
-
 
 				xdoc.Add(project);
 
@@ -76,16 +74,13 @@ namespace Controls
 
 				_logControler.AddMessage("Настройки проекта сохранены в XML файле.");
 			});
-			//Запускаем поток.
-			thread.Start();
 
 		}
 
 		/// <summary> Загрузить настройки проекта.</summary>
-		public void LoadXML()
+		public async Task LoadXMLAsync()
 		{
-			// Создаем новый поток.
-			var thread = new Thread(() =>
+			await Task.Run(() =>
 			{
 				XDocument xdoc = XDocument.Load(_pathXML);
 
@@ -94,8 +89,7 @@ namespace Controls
 
 				_logControler.AddMessage($"{IsDetector} - {IsUnderCatalog}");
 			});
-			//Запускаем поток.
-			thread.Start();
+
 		}
 
 		#endregion
