@@ -169,8 +169,9 @@ namespace Controls
 
 			_fileStart = path;
 			_capture = new VideoCapture(path);
-			_fps = (int)(1000 / _capture.Fps);
-			using(Mat image = new Mat())
+			//_fps = (int)(1000 / _capture.Fps);
+			_fps = 1;
+			using (Mat image = new Mat())
 			{
 				_capture.Read(image);
 				if(!image.Empty())
