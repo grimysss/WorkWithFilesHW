@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "dgSpecHash": "MCfkjzx9i41CO4dOSlt+7xfYYIGejd4NVbDWcDapLF4p/iFSP1Zb861pxOYfXLsm6crvBkEHJHApVJXY3ryEIg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\grimy\\Downloads\\test-master (1)\\test-master\\src\\Detector\\Detector.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\grimy\\.nuget\\packages\\alturos.yolo\\2.6.4\\alturos.yolo.2.6.4.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\grimy\\.nuget\\packages\\opencvsharp3-anycpu\\4.0.0.20181129\\opencvsharp3-anycpu.4.0.0.20181129.nupkg.sha512",
+    "C:\\Users\\grimy\\.nuget\\packages\\system.drawing.common\\4.5.0\\system.drawing.common.4.5.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Alturos.Yolo 2.6.4' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETStandard,Version=v2.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Alturos.Yolo",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.0"
+      ]
+    }
+  ]
+}

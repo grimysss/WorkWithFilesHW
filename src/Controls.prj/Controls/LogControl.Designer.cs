@@ -28,29 +28,30 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this._txtLog = new System.Windows.Forms.RichTextBox();
-			this.SuspendLayout();
-			// 
-			// _txtLog
-			// 
-			this._txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this._txtLog = new System.Windows.Forms.RichTextBox();
+            this.SuspendLayout();
+            // 
+            // _txtLog
+            // 
+            this._txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._txtLog.Location = new System.Drawing.Point(0, 0);
-			this._txtLog.Name = "_txtLog";
-			this._txtLog.ReadOnly = true;
-			this._txtLog.Size = new System.Drawing.Size(748, 100);
-			this._txtLog.TabIndex = 2;
-			this._txtLog.Text = "";
-			// 
-			// LogControl
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this._txtLog);
-			this.Name = "LogControl";
-			this.Size = new System.Drawing.Size(748, 100);
-			this.ResumeLayout(false);
+            this._txtLog.Location = new System.Drawing.Point(0, 0);
+            this._txtLog.Name = "_txtLog";
+            this._txtLog.ReadOnly = true;
+            this._txtLog.Size = new System.Drawing.Size(748, 100);
+            this._txtLog.TabIndex = 2;
+            this._txtLog.Text = "";
+            this._txtLog.TextChanged += new System.EventHandler(this.OnLogTextChanged);
+            // 
+            // LogControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this._txtLog);
+            this.Name = "LogControl";
+            this.Size = new System.Drawing.Size(748, 100);
+            this.ResumeLayout(false);
 
 		}
 

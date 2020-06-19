@@ -32,7 +32,7 @@ namespace Controls
 		{
 			_logControler = logControler;
 
-			CheckIfXMLEsists();
+			CheckIfXMLEsistsAsync();
 		}
 
 		#endregion
@@ -40,13 +40,13 @@ namespace Controls
 		#region Methods
 
 		/// <summary> Проверям существует ли XML файл. </summary>
-		public void CheckIfXMLEsists()
+		public async void CheckIfXMLEsistsAsync()
 		{
 
 			// Если существует, то загружаем его.
 			if(File.Exists(_pathXML))
 			{
-				LoadXMLAsync();
+				await LoadXMLAsync();
 			}
 
 		}
@@ -72,7 +72,7 @@ namespace Controls
 
 				xdoc.Save(_pathXML);
 
-				_logControler.AddMessage("Настройки проекта сохранены в XML файле.");
+				//_logControler.AddMessage("Настройки проекта сохранены в XML файле.");
 			});
 
 		}

@@ -14,7 +14,7 @@ namespace Controls
 		#region Data
 
 		private List<string> _listImage;
-		private int _curerntImage;
+		private int _curentImage;
 		private int _countImage;
 
 		private ProjectSettings _projectSettings;
@@ -105,14 +105,14 @@ namespace Controls
 
 			_listImage = _filesDirectory.ToList();
 
-			_curerntImage = 0;
+			_curentImage = 0;
 			_countImage = _filesDirectory.Count();
 
 			// Проверяем наличие файлов с нужным расширением.
 			if(_countImage != 0)
 			{
-				AddImageOnControl(_listImage[_curerntImage]);
-				_logControler.AddMessage($"{_curerntImage} {_countImage}");
+				AddImageOnControl(_listImage[_curentImage]);
+				_logControler.AddMessage($"{_curentImage} {_countImage}");
 			}
 			else
 			{
@@ -133,13 +133,13 @@ namespace Controls
 		{
 			if(_listImage != null && _listImage.Count != 0)
 			{
-				_curerntImage++;
-				if(_curerntImage == _countImage)
+				_curentImage++;
+				if(_curentImage == _countImage)
 				{
-					_curerntImage = 0;
+					_curentImage = 0;
 				}
-				AddImageOnControl(_listImage[_curerntImage]);
-				_logControler.AddMessage($"{_curerntImage} {_countImage}");
+				AddImageOnControl(_listImage[_curentImage]);
+				_logControler.AddMessage($"{_curentImage} {_countImage}");
 			}
 		}
 
@@ -148,13 +148,13 @@ namespace Controls
 		{
 			if(_listImage != null && _listImage.Count != 0)
 			{
-				_curerntImage--;
-				if(_curerntImage <= 0)
+				_curentImage--;
+				if(_curentImage <= 0)
 				{
-					_curerntImage = _countImage - 1;
+					_curentImage = _countImage - 1;
 				}
-				AddImageOnControl(_listImage[_curerntImage]);
-				_logControler.AddMessage($"{_curerntImage} {_countImage}");
+				AddImageOnControl(_listImage[_curentImage]);
+				_logControler.AddMessage($"{_curentImage} {_countImage}");
 			}
 		}
 
@@ -170,7 +170,7 @@ namespace Controls
 			_fileStart = path;
 			_capture = new VideoCapture(path);
 			//_fps = (int)(1000 / _capture.Fps);
-			_fps = 1;
+			_fps = 30;
 			using (Mat image = new Mat())
 			{
 				_capture.Read(image);
@@ -250,6 +250,7 @@ namespace Controls
 		private async Task NextFrameAddInVideoControlAsync(Mat image)
 		{
 			OnChangeFrame(image);
+			//await Task.Run(() => OnChangeFrame(image));
 		}
 
 		#endregion

@@ -39,7 +39,16 @@ namespace Controls
 				_txtLog.AppendText(text);
 		}
 
+
+		/// <summary> Вызывается при изменении текста в логе. </summary>
+		private void OnLogTextChanged(object sender, System.EventArgs e)
+        {
+			// Проматывает лог к последней строчке при добавлении новых строчек.
+			_txtLog.SelectionStart = _txtLog.Text.Length;
+			_txtLog.ScrollToCaret();
+		}
+
 		#endregion
-	}
+    }
 }
 

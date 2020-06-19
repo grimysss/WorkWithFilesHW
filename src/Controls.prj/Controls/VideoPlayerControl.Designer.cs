@@ -143,7 +143,7 @@
 			this._btnOpenFile.TabStop = false;
 			this._btnOpenFile.Text = "Открыть файл";
 			this._btnOpenFile.UseVisualStyleBackColor = true;
-			this._btnOpenFile.Click += new System.EventHandler(this.OnOpenFileClick);
+			this._btnOpenFile.Click += new System.EventHandler(this.OnOpenFileClickAsync);
 			// 
 			// _btnImageNext
 			// 

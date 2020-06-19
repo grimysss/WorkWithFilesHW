@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using OpenCvSharp;
+using OpenCvSharp.Extensions;
 
 namespace Controls
 {
@@ -14,6 +15,8 @@ namespace Controls
 		private LogControler _logControler;
 		private VideoPlayerControler _videoPlayerControler;
 		private ProjectSettings _projectSettings;
+		private Detector _detector;
+
 
 		#endregion
 
@@ -43,6 +46,7 @@ namespace Controls
 
 			_opnFileDialog.Filter = "Image|*.png; *.jpg|Video|*.mp4; *.avi;";
 
+			_detector = new Detector(logControler);
 		}
 
 		private void OnChangeFrame(object sender, Mat image)
@@ -50,23 +54,34 @@ namespace Controls
 			using (var img = new Mat())
 			{
 
-				// В целом на моих примерах по эффективности все схожи, нужно тестировать на других видео.
-				Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Cubic);
-				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Linear);
-				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Area);
-				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Lanczos4);
+				if (_projectSettings.IsDetector)
+				{
 
-				// Сохраняет скорость, но сильно падает качество.
-				//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Nearest);
+					// В целом на моих примерах по эффективности все схожи, нужно тестировать на других видео.
+					Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Cubic);
+					//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Linear);
+					//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Area);
+					//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Lanczos4);
 
-				//_picVideo.Image = BitmapConverter.ToBitmap(img);
-				//_picVideo.Image = BitmapConverter.ToBitmap(image);
+					// Сохраняет скорость, но сильно падает качество.
+					//Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Nearest);
 
-				//_picVideo.ImageIpl = image;
-				_picVideo.ImageIpl = img;
-				_picVideo.Refresh();
+					//_picVideo.Image = BitmapConverter.ToBitmap(img);
+					//_picVideo.Image = BitmapConverter.ToBitmap(image);
 
-			}
+					//_picVideo.ImageIpl = image;
+					_picVideo.Image = _detector.Detect(img).ToBitmap();
+					_picVideo.ImageIpl = img; //mb comment
+					_picVideo.Refresh(); //mb comment
+				}
+				else
+				{
+					Cv2.Resize(image, img, new OpenCvSharp.Size(_picVideo.Width, _picVideo.Height), 0, 0, InterpolationFlags.Cubic);
+					_picVideo.ImageIpl = img;
+					_picVideo.Refresh();			
+				}
+
+				}
 		}
 
 		#endregion
@@ -74,10 +89,22 @@ namespace Controls
 		#region Handler
 
 		/// <summary> Вызывается при необходимости изменить картинку на панели. </summary>
-		private void OnChangeImage(object sender, string path) => _picVideo.Image = Image.FromFile(path);
+		private void OnChangeImage(object sender, string path)
+		{
+			var img = new Mat(path);
+			//_picVideo.Image = Image.FromFile(path);
+			if (_projectSettings.IsDetector)
+			{
+				_picVideo.Image = _detector.Detect(img).ToBitmap();
+			}
+			else
+			{
+				_picVideo.Image = Image.FromFile(path);
+			}
 
+		}
 		/// <summary> Вызывается по нажатию на кнопку открыть файл. </summary>
-		private void OnOpenFileClick(object sender, EventArgs e)
+		private async void OnOpenFileClickAsync(object sender, EventArgs e)
 		{
 			if(_opnFileDialog.ShowDialog() == DialogResult.Cancel) return;
 
@@ -87,7 +114,7 @@ namespace Controls
 			}
 			else if(_opnFileDialog.FilterIndex == (int)FilterType.Video)
 			{
-				_videoPlayerControler.OpenVideoAsync(_opnFileDialog.FileName);
+				await _videoPlayerControler.OpenVideoAsync(_opnFileDialog.FileName);
 			}
 
 		}

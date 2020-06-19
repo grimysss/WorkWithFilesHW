@@ -70,6 +70,16 @@ namespace Controls
 			}
 		}
 
+		//public async void SaveLogInFile(string text)
+		//{
+		//	using (FileStream fileStreamWriter = new FileStream(_path, FileMode.Append))
+		//	{
+
+		//		byte[] array = Encoding.Default.GetBytes(text);
+		//		await fileStreamWriter.WriteAsync(array, 0, array.Length);
+		//	}
+		//}
+
 		/// <summary> Проверка существет ли катлог, если нет, то создает его. </summary>
 		/// <param name="directoryInfo"> Информация о директории. </param>
 		public void IsDirectoryExists(DirectoryInfo directoryInfo)
