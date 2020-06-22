@@ -12,9 +12,13 @@ namespace Controls
 		{
 			using(var container = RegisterServises.Create())
 			{
+				try
+				{
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
 				Application.Run(container.Resolve<MainForm>());
+				}
+				catch { }
 			}
 		}
 	}

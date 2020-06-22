@@ -36,17 +36,17 @@ namespace Controls
 		/// <summary> Вызывается при добавлении текста в Лог. </summary>
 		private void OnAddMessageInLog(object sender, string text)
 		{
-				_txtLog.AppendText(text);
+			_txtLog.AppendText(text);
 		}
 
 
 		/// <summary> Вызывается при изменении текста в логе. </summary>
 		private void OnLogTextChanged(object sender, System.EventArgs e)
         {
-			// Проматывает лог к последней строчке при добавлении новых строчек.
-			_txtLog.SelectionStart = _txtLog.Text.Length;
-			_txtLog.ScrollToCaret();
-		}
+            // Проматывает лог к последней строчке при добавлении новых строчек.
+            _txtLog.SelectionStart = _txtLog.Text.Length;
+            _txtLog.ScrollToCaret();
+        }
 
 		#endregion
     }

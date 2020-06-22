@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MCfkjzx9i41CO4dOSlt+7xfYYIGejd4NVbDWcDapLF4p/iFSP1Zb861pxOYfXLsm6crvBkEHJHApVJXY3ryEIg==",
+  "dgSpecHash": "yuU/xLNjPWcoSOsA4bwjpYY4NATCcYCivh83HHF+x9AhEUOs9YPk43xNwFrpJCy3D0MYJvl+D0TMrYrnjzbW2Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\grimy\\Downloads\\test-master (1)\\test-master\\src\\Detector\\Detector.csproj",
+  "projectFilePath": "D:\\repository\\WorkWithFilesHW\\src\\Detector\\Detector.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\grimy\\.nuget\\packages\\alturos.yolo\\2.6.4\\alturos.yolo.2.6.4.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",

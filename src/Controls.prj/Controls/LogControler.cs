@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Controls
 {
@@ -52,7 +53,7 @@ namespace Controls
 		/// <param name="text"> Тест сообщения. </param>
 		public void AddMessage(string text)
 		{
-			var msg = $"[{DateTime.Now}] - " + text + "\n";
+            var msg = $"[{DateTime.Now}] - " + text + "\n";
 			OnAddMessageInLog(msg);
 			SaveLogInFile(msg);
 		}
