@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 
 namespace Controls
 {
-	/// <summary> Контрол видеопроигрывателя. </summary>
-	public partial class VideoPlayerControl : UserControl
+    /// <summary> Контрол видеопроигрывателя. </summary>
+    public partial class VideoPlayerControl : UserControl
 	{
 		#region Data
 
@@ -16,7 +15,6 @@ namespace Controls
 		private VideoPlayerControler _videoPlayerControler;
 		private ProjectSettings _projectSettings;
 		private Detector _detector;
-
 
 		#endregion
 
@@ -135,6 +133,8 @@ namespace Controls
 
 		#endregion
 
+		#region Methods
+
 		/// <summary> Вызывается при нажатие на кнопку Start. </summary>
 		private async void OnStartClickAsync(object sender, EventArgs e)
 		{
@@ -153,5 +153,8 @@ namespace Controls
 		{
 			await _videoPlayerControler.StopVideoAsync();
 		}
+
+		#endregion
+
 	}
 }

@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Controls
 {
-	/// <summary> Контролер для видеопроигрывателя. </summary>
-	public class VideoPlayerControler
+    /// <summary> Контролер для видеопроигрывателя. </summary>
+    public class VideoPlayerControler
 	{
 		#region Data
 
@@ -171,6 +170,7 @@ namespace Controls
 			_capture = new VideoCapture(path);
 			//_fps = (int)(1000 / _capture.Fps);
 			_fps = 30;
+
 			using (Mat image = new Mat())
 			{
 				_capture.Read(image);
@@ -190,6 +190,7 @@ namespace Controls
 		/// <summary> Воспроизвести видео. </summary>
 		public async Task PlayVideoAsync()
 		{
+			
                 if (_pause) _pause = false;
 				if(_stop) _stop = false;
 

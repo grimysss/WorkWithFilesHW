@@ -66,16 +66,32 @@ namespace Controls
                     var ymin = Int32.Parse(items.ElementAt(i).Y.ToString());
                     var width = Int32.Parse(items.ElementAt(i).Width.ToString());
                     var height = Int32.Parse(items.ElementAt(i).Height.ToString());
+                    var point = new Point(items.ElementAt(i).X + width / 2, items.ElementAt(i).Y + height / 2);
+                    //var frame = new VideoCapture;
 
+                    //Если соберусь делать доп задание: идея. (1)
+                    //var pt11 = 100;
+                    //var pt12 = 300;
+                    //var pt21 = 100;
+                    //var pt22 = 10;
+
+                    //Строим прямоугольник вокруг объекта.
                     Rect rect = new Rect(xmin, ymin, width, height);
                     img.Rectangle(rect, Scalar.Blue, 3, LineTypes.AntiAlias, 0);
+
+                    //Строим точку в центре объекта.
+                    //img.Circle(point, 2, Scalar.Blue, 2, LineTypes.AntiAlias, 0);
+
+                    //Если соберусь делать доп задание: идея. (2) Строим линию для подсчета цвепок.
+                    //img.Line(pt11, pt12, pt21, pt22, Scalar.Green, 2, LineTypes.AntiAlias, 0);
 
                     //_logControler.AddMessage($@"Тип объекта: {items.ElementAt(i).Type.ToString()}");
                     //_logControler.AddMessage($@"X: {xmin}, Y: {ymin}, Width: {width}, Height: {height}");
                     //_logControler.AddMessage($@"Уверенность: {items.ElementAt(i).Confidence.ToString("#0.##%")}");
+                    //_logControler.AddMessage($@"Центр объекта: {point}");
 
-                    // Выводим в лог тип объекта, его положение и уверенность обнаружения.
-                    _logControler.AddMessage($@"Тип объекта: {items.ElementAt(i).Type.ToString()}  X: {xmin}, Y: {ymin}, Width: {width}, Height: {height}  Уверенность: {items.ElementAt(i).Confidence.ToString("#0.##%")}");
+                    // Выводим в лог тип объекта, его положение, центр и уверенность обнаружения.
+                    _logControler.AddMessage($@"Тип объекта: {items.ElementAt(i).Type}  X: {xmin}, Y: {ymin}, Width: {width}, Height: {height}  Центр объекта: { point}   Уверенность: {items.ElementAt(i).Confidence:#0.##%}");
                 }
             }
             return img;

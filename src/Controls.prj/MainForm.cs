@@ -44,8 +44,8 @@ namespace Controls
 
 		}
 
-		#endregion
+        #endregion
 
-	}
+    }
 }
 
