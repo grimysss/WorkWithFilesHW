@@ -44,7 +44,7 @@ namespace Controls
 
 			_opnFileDialog.Filter = "Image|*.png; *.jpg|Video|*.mp4; *.avi;";
 
-			_detector = new Detector(logControler);
+			_detector = new Detector(logControler, videoPlayerControler);
 		}
 
 		private void OnChangeFrame(object sender, Mat image)
@@ -79,7 +79,7 @@ namespace Controls
 					_picVideo.Refresh();			
 				}
 
-				}
+			}
 		}
 
 		#endregion

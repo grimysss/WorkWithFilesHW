@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Alturos.Yolo;
 using OpenCvSharp;
 
@@ -12,48 +13,28 @@ namespace Controls
 
         private YoloWrapper _wrapper;
         private LogControler _logControler;
+        private VideoPlayerControler _videoPlayerControler;
 
         #endregion
 
         #region .ctor
 
-        /// <summary> Создаем контроллер детектора. </summary>
-        /// <param name="logControler"> Контролер лога. </param>
-        public Detector(LogControler logControler)
+        public Detector(LogControler logControler, VideoPlayerControler videoPlayerControler)
         {
             _logControler = logControler;
+            _videoPlayerControler = videoPlayerControler;
 
             _wrapper = new YoloWrapper(@"C:\Users\grimy\Desktop\yolo3\yolov3_training_test.cfg",
                                        @"C:\Users\grimy\Desktop\yolo3\yolov3_training_final_not.weights",
                                        @"C:\Users\grimy\Desktop\yolo3\obj.names");
         }
 
-        //public Detector()
-        //{
-        //    _wrapper = new YoloWrapper(@"C:\Users\grimy\Desktop\yolov4\yolov4.cfg",
-        //                               @"C:\Users\grimy\Desktop\yolov4\yolov4.weights",
-        //                               @"C:\Users\grimy\Desktop\yolov4\coco.names");
-        //}
-
-        //public Detector()
-        //{
-        //    _wrapper = new YoloWrapper(@"C:\Users\grimy\Desktop\YOLO-Tiny-v3\yolov3-tiny.cfg",
-        //                               @"C:\Users\grimy\Desktop\YOLO-Tiny-v3\yolov3-tiny.weights",
-        //                               @"C:\Users\grimy\Desktop\YOLO-Tiny-v3\coco.names");
-        //}
-
         #endregion
 
         #region Methods
 
-        public IEnumerable<Alturos.Yolo.Model.YoloItem> GetInfoAboutDetection(string path)
-        {
-            return _wrapper.Detect(new Mat(path).ToBytes());
-        }
-
         public Mat Detect(Mat img)
         {
-
             //var img = new Mat(path);
             var items = _wrapper.Detect(img.ToBytes());
 
@@ -67,7 +48,7 @@ namespace Controls
                     var width = Int32.Parse(items.ElementAt(i).Width.ToString());
                     var height = Int32.Parse(items.ElementAt(i).Height.ToString());
                     var point = new Point(items.ElementAt(i).X + width / 2, items.ElementAt(i).Y + height / 2);
-                    //var frame = new VideoCapture;
+                    var frameCount = _videoPlayerControler.FrameCount;
 
                     //Если соберусь делать доп задание: идея. (1)
                     //var pt11 = 100;
@@ -85,13 +66,18 @@ namespace Controls
                     //Если соберусь делать доп задание: идея. (2) Строим линию для подсчета цвепок.
                     //img.Line(pt11, pt12, pt21, pt22, Scalar.Green, 2, LineTypes.AntiAlias, 0);
 
+                    //_logControler.AddMessage($@"Номер кадра: {frameCount}");
                     //_logControler.AddMessage($@"Тип объекта: {items.ElementAt(i).Type.ToString()}");
                     //_logControler.AddMessage($@"X: {xmin}, Y: {ymin}, Width: {width}, Height: {height}");
                     //_logControler.AddMessage($@"Уверенность: {items.ElementAt(i).Confidence.ToString("#0.##%")}");
                     //_logControler.AddMessage($@"Центр объекта: {point}");
 
-                    // Выводим в лог тип объекта, его положение, центр и уверенность обнаружения.
-                    _logControler.AddMessage($@"Тип объекта: {items.ElementAt(i).Type}  X: {xmin}, Y: {ymin}, Width: {width}, Height: {height}  Центр объекта: { point}   Уверенность: {items.ElementAt(i).Confidence:#0.##%}");
+                    // Выводим в лог номер кадра, тип объекта, его положение, центр и уверенность обнаружения.
+                    //_logControler.AddMessage($@"Номер кадра:  {frameCount},  Тип объекта: {items.ElementAt(i).Type},  X: {xmin}, Y: {ymin}, Width: {width}, Height: {height},  Центр объекта: { point},   Уверенность: {items.ElementAt(i).Confidence:#0.##%}");
+
+                    // Укороченная версия.
+                    _logControler.AddMessage($@"№ кадра:  {frameCount},  Объект: {items.ElementAt(i).Type},  X: {xmin}, Y: {ymin}, Width: {width}, Height: {height},  Центр: { point},   Уверенность: {items.ElementAt(i).Confidence:#0.##%}");
+
                 }
             }
             return img;

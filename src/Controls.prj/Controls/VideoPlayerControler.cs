@@ -25,6 +25,16 @@ namespace Controls
 		private bool _pause;
 		private bool _stop;
 		private string _fileStart;
+		private int _frameCount;
+
+		public int FrameCount
+		{
+			get
+			{
+				return _frameCount;
+			}
+			set { _frameCount = value; }
+		}
 
 		#endregion
 
@@ -73,13 +83,13 @@ namespace Controls
 			_logControler = logControler;
 		}
 
-		#endregion
+        #endregion
 
-		#region MethodsImage
+        #region MethodsImage
 
-		/// <summary> Открыть одну картинку. </summary>
-		/// <param name="path">Путь к картинке. </param>
-		public void OpenImage(string path)
+        /// <summary> Открыть одну картинку. </summary>
+        /// <param name="path">Путь к картинке. </param>
+        public void OpenImage(string path)
 		{
 			AddImageOnControl(path);
 		}
@@ -164,7 +174,7 @@ namespace Controls
 		/// <param name="path"></param>
 		public async Task OpenVideoAsync(string path)
 		{
-			if(_capture != null) _capture.Dispose();
+			if (_capture != null) _capture.Dispose();
 
 			_fileStart = path;
 			_capture = new VideoCapture(path);
@@ -174,7 +184,7 @@ namespace Controls
 			using (Mat image = new Mat())
 			{
 				_capture.Read(image);
-				if(!image.Empty())
+				if (!image.Empty())
 				{
 					await NextFrameAddInVideoControlAsync(image);
 					_pause = false;
@@ -190,46 +200,46 @@ namespace Controls
 		/// <summary> Воспроизвести видео. </summary>
 		public async Task PlayVideoAsync()
 		{
-			
-                if (_pause) _pause = false;
-				if(_stop) _stop = false;
+			if (_pause) _pause = false;
+			if (_stop) _stop = false;
 
-				while(true)
+			while(true)
+			{
+				_frameCount = _capture.PosFrames;
+				if (_capture != null)
 				{
-					if(_capture != null)
+					if (_pause || _stop)
 					{
-						if(_pause || _stop)
-						{
-							_pause = false;
-							_stop = false;
-							break;
-						}
-						using(Mat image = new Mat())
-						{
-							_capture.Read(image);
-							if(image.Empty())
-							{
-								_logControler.AddMessage("Конец видео!");
-								break;
-							}
-							await NextFrameAddInVideoControlAsync(image);
-							await Task.Delay(_fps);
-							//Cv2.WaitKey(_fps);
-
-							//Cv2.WaitKey(0);
-						}
-					}
-					else
-					{
+						_pause = false;
+						_stop = false;
 						break;
 					}
+					using(Mat image = new Mat())
+					{
+						_capture.Read(image);
+						if(image.Empty())
+						{
+							_logControler.AddMessage("Конец видео!");
+							break;
+						}
+						await NextFrameAddInVideoControlAsync(image);
+						await Task.Delay(_fps);
+						//Cv2.WaitKey(_fps);
+
+						//Cv2.WaitKey(0);
+					}
 				}
+				else
+				{
+					break;
+				}
+			}
 		}
 
 		/// <summary> Остановить видео. </summary>
 		public async Task StopVideoAsync()
 		{
-			if(_capture != null)
+			if (_capture != null)
 			{
 				_stop = true;
 				_capture.Dispose();
