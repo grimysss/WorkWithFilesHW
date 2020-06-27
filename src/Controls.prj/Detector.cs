@@ -18,7 +18,9 @@ namespace Controls
         #endregion
 
         #region .ctor
-
+        /// <summary> Создает контролер детектора. </summary>
+        /// <param name="logControler"> Контролер лога. </param>
+        /// <param name="videoPlayerControler"> Контролер видеопроигрывателя. </param>
         public Detector(LogControler logControler, VideoPlayerControler videoPlayerControler)
         {
             _logControler = logControler;
@@ -32,7 +34,9 @@ namespace Controls
         #endregion
 
         #region Methods
-
+        /// <summary> Детектор. </summary>
+        /// <param name="img"></param>
+        /// <returns></returns>
         public Mat Detect(Mat img)
         {
             //var img = new Mat(path);

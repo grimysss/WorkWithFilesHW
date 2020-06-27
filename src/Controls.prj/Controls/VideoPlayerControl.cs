@@ -47,6 +47,9 @@ namespace Controls
 			_detector = new Detector(logControler, videoPlayerControler);
 		}
 
+		/// <summary> Обработка кадров. </summary>
+		/// <param name="sender"></param>
+		/// <param name="image"></param>
 		private void OnChangeFrame(object sender, Mat image)
 		{
 			using (var img = new Mat())
