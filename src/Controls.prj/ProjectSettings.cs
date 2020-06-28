@@ -1,12 +1,11 @@
 ﻿using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Controls
 {
-	/// <summary> Класс с настройками проекта. </summary>
-	public class ProjectSettings
+    /// <summary> Класс с настройками проекта. </summary>
+    public class ProjectSettings
 	{
 		#region Data
 

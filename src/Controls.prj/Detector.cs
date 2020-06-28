@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Alturos.Yolo;
 using OpenCvSharp;
 
@@ -54,21 +52,21 @@ namespace Controls
                     var point = new Point(items.ElementAt(i).X + width / 2, items.ElementAt(i).Y + height / 2);
                     var frameCount = _videoPlayerControler.FrameCount;
 
-                    //Если соберусь делать доп задание: идея. (1)
+                    // Если соберусь делать доп задание: идея. (1)
                     //var pt11 = 100;
                     //var pt12 = 300;
                     //var pt21 = 100;
                     //var pt22 = 10;
 
-                    //Строим прямоугольник вокруг объекта.
+                    // Если соберусь делать доп задание: идея. (2) Строим линию для подсчета цвепок.
+                    //img.Line(pt11, pt12, pt21, pt22, Scalar.Green, 2, LineTypes.AntiAlias, 0);
+
+                    // Строим прямоугольник вокруг объекта.
                     Rect rect = new Rect(xmin, ymin, width, height);
                     img.Rectangle(rect, Scalar.Blue, 3, LineTypes.AntiAlias, 0);
 
-                    //Строим точку в центре объекта.
+                    // Строим точку в центре объекта.
                     //img.Circle(point, 2, Scalar.Blue, 2, LineTypes.AntiAlias, 0);
-
-                    //Если соберусь делать доп задание: идея. (2) Строим линию для подсчета цвепок.
-                    //img.Line(pt11, pt12, pt21, pt22, Scalar.Green, 2, LineTypes.AntiAlias, 0);
 
                     //_logControler.AddMessage($@"Номер кадра: {frameCount}");
                     //_logControler.AddMessage($@"Тип объекта: {items.ElementAt(i).Type.ToString()}");

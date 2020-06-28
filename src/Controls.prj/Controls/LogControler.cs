@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Controls
 {
-	/// <summary> Класс содеращий функционал для лога. </summary>
-	public class LogControler
+    /// <summary> Класс содеращий функционал для лога. </summary>
+    public class LogControler
 	{
 		#region Data
 

@@ -225,7 +225,6 @@ namespace Controls
 						await NextFrameAddInVideoControlAsync(image);
 						await Task.Delay(_fps);
 						//Cv2.WaitKey(_fps);
-
 						//Cv2.WaitKey(0);
 					}
 				}
